@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { clearUser } from '../../actions/user';
 import { Button, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
 });
 
 function ListUsers(props) {
-  
+    
   const classes = useStyles();
   const rows = [ props.user.user ];
   let history = useHistory();
@@ -35,6 +36,7 @@ function ListUsers(props) {
               <TableCell align="right">E-mail</TableCell>
               <TableCell align="right">Data Nascimento</TableCell>
               <TableCell align="right">Tipo Usuário</TableCell>
+              <TableCell align="right">Excluir</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -45,6 +47,12 @@ function ListUsers(props) {
                 <TableCell align="right">{row.email}</TableCell>
                 <TableCell align="right">{row.birthDate}</TableCell>
                 <TableCell align="right">{row.userType}</TableCell>
+                <TableCell align="right">
+                  {
+                    props.user.user&&
+                    <Button variant="contained" color="secondary" size="small" onClick={() => props.clearUser()}>Excluir</Button>
+                  }
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -63,5 +71,9 @@ const mapStateToProps = store => ({
   user: store.user,
 });
 
-export default connect(mapStateToProps)(ListUsers);
+const mapDispatchToProps = {
+  clearUser
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListUsers);
 
